@@ -6,6 +6,16 @@ $budgetClass = empty($_GET['normalized']) ? 'BudgetLine' : 'NormalizedBudgetLine
 $names = array();
 $hash = array();
 foreach ($budgetClass::getAll() AS $Line) {
+    // Make sure these dimensions exist. There are rules, Smokey.
+    if( ! isset($hash[$Line->FunctionClass])) {
+        $hash[$Line->FunctionClass] = [];
+    }
+    if( ! isset($hash[$Line->FunctionClass][$Line->FunctionGroup])) {
+        $hash[$Line->FunctionClass][$Line->FunctionGroup] = [];
+    }
+    if( ! isset($hash[$Line->FunctionClass][$Line->FunctionGroup][$Line->Function])) {
+        $hash[$Line->FunctionClass][$Line->FunctionGroup][$Line->Function] = [];
+    }
     $hash[$Line->FunctionClass][$Line->FunctionGroup][$Line->Function][] = $Line;
 
     $names[$Line->FunctionClass] = $Line->FunctionClassName;
